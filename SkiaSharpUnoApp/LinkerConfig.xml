@@ -1,8 +1,9 @@
 ﻿<linker>
+  <assembly fullname="ClassLibrary" />
   <assembly fullname="SkiaSharpUnoApp" />
   <assembly fullname="Uno.UI" />
   <assembly fullname="System.Core">
-    <!-- This is required by JSon.NET and any expression.Compile caller -->
+    <!-- This is required by Json.NET and any expression.Compile caller -->
     <type fullname="System.Linq.Expressions*" />
   </assembly>
 </linker>

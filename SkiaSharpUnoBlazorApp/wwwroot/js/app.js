@@ -1,13 +1,14 @@
 ﻿window.skiasharpFunctions = {
-    redraw: (text, color, size) => {
+    sendData: (data) => {
         var iframe = document.getElementById('skiasharp-iframe');
 
-        var src = iframe.src || "";
-        var idx = src.indexOf('#');
-        if (idx >= 0) {
-            src = src.substr(0, idx);
-        }
+        if (!iframe ||
+            !iframe.contentWindow ||
+            !iframe.contentWindow.skiasharpFunctions ||
+            !iframe.contentWindow.skiasharpFunctions.sendData ||
+            typeof (iframe.contentWindow.skiasharpFunctions.sendData) != 'function')
+            return;
 
-        iframe.src = `${src}#text=${encodeURIComponent(text)}&color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}`;
-    }
+        iframe.contentWindow.skiasharpFunctions.sendData(data);
+    },
 };

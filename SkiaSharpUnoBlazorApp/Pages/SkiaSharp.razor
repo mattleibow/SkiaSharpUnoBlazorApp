@@ -1,4 +1,5 @@
 ﻿@page "/skiasharp"
+@using ClassLibrary
 
 <h1>SkiaSharp</h1>
 
@@ -80,16 +81,13 @@
         if (int.TryParse(currentSize?.ToString(), out var size))
             validSize = size;
 
-        await JSRuntime.InvokeVoidAsync($"skiasharpFunctions.redraw", validText, validColor, validSize);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
+        var data = new RedrawData
         {
-            await UpdateDrawing();
-        }
+            Text = validText,
+            Color = validColor,
+            Size = validSize,
+        };
+
+        await JSRuntime.InvokeVoidAsync($"skiasharpFunctions.sendData", data);
     }
 }

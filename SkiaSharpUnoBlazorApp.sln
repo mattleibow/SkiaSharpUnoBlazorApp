@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30323.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiaSharpUnoBlazorApp", "SkiaSharpUnoBlazorApp\SkiaSharpUnoBlazorApp.csproj", "{EBB1FE90-E2AA-4121-8B36-67F9C40C2B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkiaSharpUnoBlazorApp", "SkiaSharpUnoBlazorApp\SkiaSharpUnoBlazorApp.csproj", "{EBB1FE90-E2AA-4121-8B36-67F9C40C2B35}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkiaSharpUnoApp", "SkiaSharpUnoApp\SkiaSharpUnoApp.csproj", "{CA4DE90A-60A7-4E2B-821B-96637121E828}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{9DE99E32-5DF9-4BE4-B5F9-7E2ABC60EDE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CA4DE90A-60A7-4E2B-821B-96637121E828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA4DE90A-60A7-4E2B-821B-96637121E828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA4DE90A-60A7-4E2B-821B-96637121E828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE99E32-5DF9-4BE4-B5F9-7E2ABC60EDE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE99E32-5DF9-4BE4-B5F9-7E2ABC60EDE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE99E32-5DF9-4BE4-B5F9-7E2ABC60EDE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE99E32-5DF9-4BE4-B5F9-7E2ABC60EDE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

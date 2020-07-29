@@ -1,8 +1,6 @@
-﻿using SkiaSharp;
+﻿using ClassLibrary;
+using SkiaSharp;
 using SkiaSharp.Views.UWP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -12,7 +10,7 @@ namespace SkiaSharpUnoApp
 	{
 		private SKXamlCanvas skiaView;
 
-		private string currentText = "";
+		private string currentText = "Hello World!";
 		private SKColor currentColor = SKColors.Black;
 		private int currentSize = 24;
 
@@ -28,16 +26,14 @@ namespace SkiaSharpUnoApp
 		{
 			base.OnNavigatedTo(e);
 
-			FragmentNavigationHandler.FragmentChanged += OnFragmentChanged;
-
-			HandleFragment(FragmentNavigationHandler.CurrentFragment);
+			SkiaSharpFunctions.DataReceived += OnDataReceived;
 		}
 
 		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
 		{
 			base.OnNavigatingFrom(e);
 
-			FragmentNavigationHandler.FragmentChanged -= OnFragmentChanged;
+			SkiaSharpFunctions.DataReceived -= OnDataReceived;
 		}
 
 		private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -61,51 +57,18 @@ namespace SkiaSharpUnoApp
 			canvas.DrawText(currentText, x, y, paint);
 		}
 
-		private void OnFragmentChanged(object sender, FragmentChangedEventArgs e)
+		private void OnDataReceived(object sender ,DataReceivedEventArgs e)
 		{
-			HandleFragment(e.Fragment);
-		}
+			var data = e.Get<RedrawData>();
 
-		private void HandleFragment(string fragment)
-		{
-			var pairs = GetFragmentData(fragment);
+			currentText = data.Text;
 
-			var refresh = false;
-			if (pairs.TryGetValue("text", out var text))
-			{
-				currentText = text;
-				refresh = true;
-			}
-
-			if (pairs.TryGetValue("color", out var colorStr) && SKColor.TryParse(colorStr, out var color))
-			{
+			if (SKColor.TryParse(data.Color, out var color))
 				currentColor = color;
-				refresh = true;
-			}
 
-			if (pairs.TryGetValue("size", out var sizeStr) && int.TryParse(sizeStr, out var size))
-			{
-				currentSize = size;
-				refresh = true;
-			}
+			currentSize = data.Size;
 
-			if (refresh)
-				skiaView.Invalidate();
-		}
-
-		private static Dictionary<string, string> GetFragmentData(string fragment)
-		{
-			var pairStrings = fragment
-				.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries)
-				.Select(p => p.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
-
-			var pairs = new Dictionary<string, string>();
-			foreach (var pair in pairStrings)
-				if (pair.Length == 1)
-					pairs[pair[0]] = "";
-				else if (pair.Length == 2)
-					pairs[pair[0]] = Uri.UnescapeDataString(pair[1] ?? "");
-			return pairs;
+			skiaView.Invalidate();
 		}
 	}
 }
