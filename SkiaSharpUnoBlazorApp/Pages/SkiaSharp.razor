@@ -1,0 +1,95 @@
+﻿@page "/skiasharp"
+
+<h1>SkiaSharp</h1>
+
+<p>
+
+    <div class="form-group">
+        <label for="inputText">Text</label>
+        <input type="text" class="form-control" id="inputText" placeholder="Hello World!" @bind="CurrentText" @bind:event="oninput">
+        <small id="textHelp" class="form-text text-muted">Type some text here to draw in the box below.</small>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputColor">Color</label>
+            <input type="color" class="form-control" id="inputColor" placeholder="#FF000000" @bind="CurrentColor" @bind:event="oninput">
+            <small id="colorHelp" class="form-text text-muted">Type/select some hex color, such as #FF000000.</small>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputSize">Text Size</label>
+            <input type="number" class="form-control" id="inputSize" placeholder="24" @bind="CurrentSize" @bind:event="oninput">
+            <small id="sizeHelp" class="form-text text-muted">Type some font size.</small>
+        </div>
+    </div>
+
+</p>
+
+<iframe src="http://localhost:53173/" frameBorder="0" width="640" height="480" id="skiasharp-iframe"></iframe>
+
+@code {
+    [Inject]
+    IJSRuntime JSRuntime { get; set; }
+
+
+    private string currentText = "Hello World!";
+    private string currentColor = "#FF000000";
+    private string currentSize = "24";
+
+
+    public string CurrentText
+    {
+        get => currentText;
+        set
+        {
+            currentText = value;
+            _ = UpdateDrawing();
+        }
+    }
+
+    public string CurrentColor
+    {
+        get => currentColor;
+        set
+        {
+            currentColor = value;
+            _ = UpdateDrawing();
+        }
+    }
+
+    public string CurrentSize
+    {
+        get => currentSize;
+        set
+        {
+            currentSize = value;
+            _ = UpdateDrawing();
+        }
+    }
+
+
+    private async Task UpdateDrawing()
+    {
+        var validText = currentText;
+
+        var validColor = "#FF000000";
+        if (currentColor is string color && !string.IsNullOrWhiteSpace(color))
+            validColor = color.Trim();
+
+        var validSize = 24;
+        if (int.TryParse(currentSize?.ToString(), out var size))
+            validSize = size;
+
+        await JSRuntime.InvokeVoidAsync($"skiasharpFunctions.redraw", validText, validColor, validSize);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await UpdateDrawing();
+        }
+    }
+}
