@@ -33,4 +33,10 @@
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.4.0-dev.14" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.4.0-dev.14" />
   </ItemGroup>
+  <Target Name="_RemoveOldFiles" BeforeTargets="BuildDist">
+    <ItemGroup>
+      <_ToRemove Include="bin\$(Configuration)\netstandard2.0\dist\" />
+    </ItemGroup>
+    <RemoveDir Directories="@(_ToRemove)" />
+  </Target>
 </Project>

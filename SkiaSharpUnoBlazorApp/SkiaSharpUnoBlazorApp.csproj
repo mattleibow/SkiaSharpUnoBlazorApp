@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -11,5 +11,25 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkiaSharpUnoApp\SkiaSharpUnoApp.csproj" />
+  </ItemGroup>
+
+  <Target Name="_CopyUnoAppIntoWwwRoot" AfterTargets="_BlazorStaticWebAssetsCopyGeneratedFilesToOutputDirectory">
+    <ItemGroup>
+      <_ToCopy Include="..\SkiaSharpUnoApp\bin\$(Configuration)\netstandard2.0\dist\**\*" />
+      <_PackageDirNames Include="..\SkiaSharpUnoApp\bin\$(Configuration)\netstandard2.0\dist\package_*\AppManifest.js" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_PackageDirName>..\SkiaSharpUnoApp\bin\$(Configuration)\netstandard2.0\dist\@(_PackageDirNames -> '%(RecursiveDir)')</_PackageDirName>
+    </PropertyGroup>
+    <Copy SourceFiles="@(_ToCopy)" DestinationFiles="@(_ToCopy -> 'bin\$(Configuration)\$(TargetFramework)\wwwroot\uno\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(_PackageDirName)\AppManifest.js" DestinationFiles="bin\$(Configuration)\$(TargetFramework)\wwwroot\uno\AppManifest.js" />
+    <ItemGroup>
+      <_ToCopyAssets Include="$(_PackageDirName)\Assets\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_ToCopyAssets)" DestinationFiles="@(_ToCopyAssets -> 'bin\$(Configuration)\$(TargetFramework)\wwwroot\uno\Assets\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 
 </Project>
